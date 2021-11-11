@@ -28,4 +28,3 @@ group = df.groupby('Tipo_Animal') # Agrupamento por tipo de animal
 print("Agregar os dados pelo aggregate:")
 print(group.aggregate(np.mean), '\n')
 
-
