@@ -94,3 +94,23 @@ print("\nElementos do indice 3:\n", df.loc['ind3']) # Busca elementos com indice
 
 print("\nElementos com descarte do indice ind2", df.drop('ind2')) # Remove indice ind2
 print("\nElementos com descarte da coluna col1", df.drop('col1', axis = 1)) # Remove coluna col1
+
+# Indexação multinivel
+# Series com indexação multinivel
+srs = pd.Series(np.arange(5), index=[['A','A','B','B','B'],[1,2,3,4,5]])
+print("\nSeries com indexação multinivel:\n", srs)
+print(srs)
+# Indexação multinivel na serie a
+print("\nElementos do indice A:\n", srs['A'])
+# Indexação multinivel na serie b
+print("\nElementos do indice B:\n", srs['B'])
+
+# DataFrame com indexação multinivel
+df = pd.DataFrame(np.arange(25).reshape(5,5), index=[['A','A','A','B','B'], [1,2,3,4,5]], 
+                        columns=[['USA', 'Pak', 'Pak', 'UK','Ind'], ['Day', 'Day','Night', 'Night', 'Night']])
+# Indexação multinivel em dataframe
+print(df)
+
+# Indexação multinivel na coluna USA
+print("\nElementos da coluna USA:\n", df['USA'])
+print("\nElementos da coluna USA com indice A:\n", df.loc['A'])
