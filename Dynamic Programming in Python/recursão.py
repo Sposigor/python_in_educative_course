@@ -83,6 +83,7 @@ def main():
 
 main()
 
+
 # Tabuleiro de xadrez
 # Entrada
 n = 4
@@ -132,3 +133,24 @@ def main():
     print (QTabuleiro)
 main()
 
+
+# Aplicando a programação dinâmica para resolver o excesso de passos que a formula de fibonacci pode gerar
+
+calculated = {} # dicionario para armazenar os valores calculados
+
+def fib2(n):
+    if n == 0: # caso 1
+        return 0
+    if n == 1: # caso 2
+        return 1
+    elif n in calculated: # Redução dos passos necessarios para achar o valor
+        return calculated[n]
+    else: # passos recursivos
+        calculated[n] = fib(n-1) + fib(n-2)
+    return calculated[n]
+
+print(fib2(5))
+
+# Após a alteração do codigo original, reduzimos a quantidade de processamento para resolução do problema.
+# Porém a programação dinamica não se aplica a qualquer problema, existe dois requisitos que devem ser satisfeitos:
+# optimal substructure and overlapping subproblems, ou, subestrucura e subproblemas sobrepostos.
