@@ -92,3 +92,51 @@ def staircase2(n, m):
     return nthStair(n, m, memo) 
 
 print(staircase2(100, 6))
+
+
+# O desafio da mochila usando a solução de recursão simples
+# Variaveis do desafio
+pesos = [1, 2, 4, 6]
+preços = [4, 2, 4, 7]
+capacidade =  7
+
+def respMochila(pesos, preços, capacidade, index):
+    # caso 1 
+    if capacidade <= 0 or index >= len(pesos): 
+        return 0
+    # caso 2
+    if pesos[index] > capacidade: 
+        return respMochila(pesos, preços, capacidade, index + 1)
+    # Recursão
+    return max(preços[index]+respMochila(pesos, preços, capacidade - pesos[index], index+1),
+            respMochila(pesos, preços, capacidade, index + 1))
+
+def mochila(pesos, preços, capacidade):
+    return respMochila(pesos, preços, capacidade, 0)
+
+print(mochila(pesos, preços, capacidade))
+
+# desafio da mochila usando memorização
+def respMochila1(pesos, preços, capacidade, index, memo):
+    # caso 1
+    if capacidade <= 0 or index >= len(pesos): 
+        return 0
+    # Verificando se o resultado já foi calculado
+    if (capacidade, index) in memo: 
+        return memo[(capacidade, index)]
+    # caso 2
+    if pesos[index] > capacidade: 
+        # armazenando o resultado
+        memo[(capacidade, index)] = respMochila1(pesos, preços, capacidade, index + 1, memo) 
+        return memo[(capacidade, index)] 
+    # recursão
+    memo[(capacidade, index)] = max(preços[index]+respMochila1(pesos, preços, capacidade - pesos[index], index+1, memo),
+            respMochila1(pesos, preços, capacidade, index + 1, memo)) 
+    return memo[(capacidade, index)]
+
+def mochila1(pesos, preços, capacidade):
+    # Criando dicionario para armazenar o resultado
+    memo = {} 
+    return respMochila1(pesos, preços, capacidade, 0, memo)
+
+print(mochila1([2,1,1,3], [2,8,1,10], 4))
