@@ -1,3 +1,6 @@
+import numpy as np
+
+
 # Desafio 1 - Numero de maneiras de representar N dolares
 # Recursão Simples
 print("Desafio 1 - Recursão Simples")
@@ -161,3 +164,152 @@ print(corteH3(3, [3,7,8]))
 print("\nDesafio 3: Problema com a programação ponderada")
 # Recursão Simples
 print("\nDesafio 3 - Recursão Simples")
+def ultimo_confl(index, modulo, eSorte = False):
+    if not eSorte:
+        modulo = sorted(modulo, key=lambda tup: tup[1])
+    for i in range(index, -1, -1):
+        if modulo[index][0] >= modulo[i][1]:
+            return i
+    return None
+
+def RecursãoR(modulo, n):
+    if n == None or n < 0:  # base case of conflict with the first event
+        return 0
+    if n == 0:              # base case of no conflict with the first event
+        return modulo[n][2]
+    
+    # find max of keeping the n-th event or not keeping it
+    return max(modulo[n][2] + RecursãoR(modulo, ultimo_confl(n, modulo, eSorte= True)), 
+            RecursãoR(modulo, n-1))
+
+def PesoModulo(modulo):
+    
+    modulo = sorted(modulo, key=lambda tup: tup[1])
+    return RecursãoR(modulo, len(modulo)-1)
+
+print(PesoModulo([(0, 2, 25), (1, 6, 40), (6, 9, 170), (3, 8, 220)]))
+
+
+# Recursão Memoization
+print("\nDesafio 3 - Recursão Memoization")
+def ultimo_confl2(index, modulo, eSorte = False):
+    if not eSorte:
+        modulo = sorted(modulo, key=lambda tup: tup[1])
+    for i in range(index, -1, -1):
+        if modulo[index][0] >= modulo[i][1]:
+            return i
+    return None
+
+def RecursãoR2(modulo, n, memo):
+    if n == None or n < 0:
+        return 0
+    if n == 0:
+        return modulo[n][2]
+    if n in memo:
+        return memo[n]
+    memo[n] = max(modulo[n][2] + RecursãoR2(modulo, ultimo_confl2(n, modulo, eSorte= True), memo), 
+            RecursãoR2(modulo, n-1, memo))
+    return memo[n]
+
+def peso_modulo2(modulo):
+    modulo = sorted(modulo, key=lambda tup: tup[1])
+    memo = {}
+    return RecursãoR2(modulo, len(modulo)-1, memo)
+
+print(peso_modulo2([(0, 2, 25), (1, 5, 40), (6, 8, 170), (3, 7, 220)]))
+modulo = [(i,i+2,10) for i in range(100)]
+print(peso_modulo2(modulo))
+
+
+# Recursão bottom-up
+def ultimo_confl3(index, modulo, eSorte = False):
+    if not eSorte:
+        modulo = sorted(modulo, key=lambda tup: tup[1])
+    for i in range(index, -1, -1):
+        if modulo[index][0] >= modulo[i][1]:
+            return i
+    return None
+
+def peso_modulo3(modulo):
+    modulo = sorted(modulo, key=lambda tup: tup[1])
+    dp = [0 for _ in range(len(modulo)+1)]
+
+    for i in range(1, len(modulo)+1):
+        index_LC = ultimo_confl3(i-1, modulo, eSorte=True)
+        if index_LC == None:
+            index_LC = -1
+        dp[i] = max(dp[i-1], dp[index_LC+1]+modulo[i-1][2])
+    return dp[len(modulo)]
+
+print(peso_modulo3([(0, 2, 25), (1, 5, 40), (6, 8, 170), (3, 7, 220)]))
+modulo = [(i,i+2,10) for i in range(100)]
+print(peso_modulo3(modulo))
+
+
+# Desafio 4: Multiplicação da matriz
+# Recursão Simples
+print("\nDesafio 4: Multiplicação da matriz")
+def minMultlipicador(foco):
+    if len(foco) <= 2:
+        return 0
+    minimo = np.inf
+    for i in range(1,len(foco)-1):
+        minimo = min(minimo, minMultlipicador(foco[0:i+1]) + minMultlipicador(foco[i:]) +
+                    foco[0] * foco[-1] * foco[i])
+    return minimo
+
+print(minMultlipicador([3, 3, 2, 1, 2]))
+
+
+# Recursão simples com otimização de tempo
+print("\nDesafio 4: Multiplicação da matriz - Recursão simples com otimização de tempo")
+def minMultiplicador2(foco, i, j):
+    if j-i <= 2:
+        return 0
+    minimo = np.inf
+    for k in range(i+1, j-1):
+        minimo = min(minimo, minMultiplicador2(foco, i, k+1) + minMultiplicador2(foco, k, j) +
+                    foco[i]*foco[j-1]*foco[k])
+    return minimo
+
+def minMulti(foco):
+    return minMultiplicador2(foco, 0, len(foco))
+
+print(minMulti([3, 3, 2, 1, 2]))
+
+
+# Recursão com memoization
+print("\nDesafio 4: Multiplicação da matriz - Recursão com memoization")
+def minMulti_(foco, i, j, memo):
+    if j-i <= 2:
+        return 0
+    if (i,j) in memo:
+        return memo[(i,j)]
+    minimo = np.inf
+    for k in range(i+1, j-1):
+        minimo = min(minimo, minMulti_(foco, i, k+1, memo) + minMulti_(foco, k, j, memo) +
+                    foco[i]*foco[j-1]*foco[k])
+    memo[(i,j)] = minimo
+    return minimo
+
+def minMulti2(foco):
+    memo = {}
+    return minMulti_(foco, 0, len(foco), memo)
+
+print(minMulti2([3, 3, 2, 1, 2]))
+
+
+# Recursão bottom-up
+print("\nDesafio 4: Multiplicação da matriz - Recursão bottom-up")
+def min_Multi(foco):
+    dp = [[0 for _ in range(len(foco))] for _ in range(len(foco))]
+    for l in range(2,len(foco)):
+        for i in range(1,len(foco)-l+1):
+            j = i+l-1
+            dp[i][j] = np.inf
+            for k in range(i, j):
+                temp = dp[i][k]+ dp[k+1][j] + foco[i-1]*foco[k]*foco[j]
+                if temp < dp[i][j]:
+                    dp[i][j] = temp
+    return dp[1][-1]
+print(min_Multi([3, 3, 2, 1, 2]))
