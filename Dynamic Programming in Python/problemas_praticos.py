@@ -313,3 +313,32 @@ def min_Multi(foco):
                     dp[i][j] = temp
     return dp[1][-1]
 print(min_Multi([3, 3, 2, 1, 2]))
+
+
+# Desafio 5: O problema do viajante
+print("\nDesafio 5: O problema do viajante")
+# recursão simples
+print("\nRecursão simples")
+def Trajeto_M(Distancia, Verifica, index, Inicio):
+    minimo = np.inf
+    for i in range(len(Distancia)):
+        if i != index and i != Inicio and i not in Verifica:
+            Verifica[i] = 1
+            minimo = min(minimo, Distancia[index][i]+Trajeto_M(Distancia, Verifica, i, Inicio))
+            del Verifica[i]
+    if minimo == np.inf:
+        return Distancia[index][Inicio]
+    return minimo
+
+def Trajeto(Distancia):
+    Verifica = {}
+    minimo = np.inf
+    for i in range(len(Distancia)):
+        minimo = min(minimo, Trajeto_M(Distancia, Verifica, i, i))
+    return minimo
+
+print(Trajeto([
+        [0, 10, 20],
+        [12, 0, 10],
+        [19, 11, 0],
+]))
