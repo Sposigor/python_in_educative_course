@@ -331,7 +331,7 @@ scipy = ">=1.0"
 
 [[package]]
 name = "selenium"
-version = "4.0.0"
+version = "4.1.0"
 description = ""
 category = "main"
 optional = false
@@ -460,7 +460,7 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "85b07138c1fc2412aa28b47c0aa9910350954478da5e2443f92b9c3c3a549126"
+content-hash = "ba2763e33fde642c6fc4c0dd729ad6810f1bddcc2641f868f1b69dce07052881"
 
 [metadata.files]
 async-generator = [
@@ -832,7 +832,7 @@ seaborn = [
     {file = "seaborn-0.11.2.tar.gz", hash = "sha256:cf45e9286d40826864be0e3c066f98536982baf701a7caa386511792d61ff4f6"},
 ]
 selenium = [
-    {file = "selenium-4.0.0-py3-none-any.whl", hash = "sha256:c942b166a21ce9c9065ad249b54059e926d39f9000167b5ca0fa4950d2ef9a82"},
+    {file = "selenium-4.1.0-py3-none-any.whl", hash = "sha256:27e7b64df961d609f3d57237caa0df123abbbe22d038f2ec9e332fb90ec1a939"},
 ]
 setuptools-scm = [
     {file = "setuptools_scm-6.3.2-py3-none-any.whl", hash = "sha256:4c64444b1d49c4063ae60bfe1680f611c8b13833d556fd1d6050c0023162a119"},
